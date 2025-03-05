@@ -29,11 +29,27 @@ model Project {
   updatedAt   DateTime @updatedAt
   userId      String
   prompts     Prompt[]
+  actions     Action[]
 }
 
+
+model Action {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id])
+  content   String
+  projectId String
+}
+
+enum PromptType {
+  USER
+  SYSTEM
+}
 model Prompt {
   id        String   @id @default(uuid())
   value     String
+  type      PromptType
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   project   Project  @relation(fields: [projectId], references: [id])

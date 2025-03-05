@@ -1,0 +1,19 @@
+{
+  "name": "worker",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "db": "*"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@types/express": "^5.0.0",
+    "express": "^4.21.2",
+    "fast-xml-parser": "^5.0.8",
+    "openai": "^4.86.1"
+  }
+}
