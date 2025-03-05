@@ -6,16 +6,17 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
+  const token = authHeader?.split(" ")[1];
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });
     return;
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_PUBLIC_KEY as string,{
-        algorithms:["RS256"],
+    const decoded = jwt.verify(token, process.env.JWT_PUBLIC_KEY as string, {
+      algorithms: ["RS256"],
     });
 
     if (!decoded) {
@@ -23,10 +24,11 @@ export const authMiddleware = (
       return;
     }
 
-    const userId = (decoded as any).payload.sub;
+    const userId = (decoded as any).sub;
     req.userId = userId;
     next();
   } catch (error) {
+    console.log(error);
     res.status(401).json({ message: "Unauthorized" });
     return;
   }

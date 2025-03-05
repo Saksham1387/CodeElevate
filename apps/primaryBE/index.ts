@@ -1,19 +1,20 @@
 import express from "express";
 import { prisma } from "db/db";
-import { redis } from "redis/redis";
 import { authMiddleware } from "./middleware";
+import cors from "cors";
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 app.post("/project", authMiddleware, async (req, res) => {
-  const prompt = req.body;
+  const body = req.body;
   const userId = req.userId!;
   const name = "random-project-name";
   const project = await prisma.project.create({
     data: {
       name,
+      description: body.prompt,
       userId: userId,
     },
   });
@@ -28,7 +29,7 @@ app.get("/projects", authMiddleware, async (req, res) => {
       userId: userId,
     },
   });
-  res.status(200).json(projects);
+  res.status(200).json({ projects: projects });
 });
 
-app.get("");
+app.listen(8080);
