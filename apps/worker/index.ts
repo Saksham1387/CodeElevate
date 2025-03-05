@@ -8,12 +8,12 @@ import { systemPrompt } from "./prompts";
 import OpenAI from "openai";
 const app = express();
 
-// AIzaSyBEOBUnhbcbBFf2xdSg2LGmOnIi7BED4GQ
+
 
 app.use(json());
 app.use(cors());
 // const client = new OpenAI();
-const client = new Anthropic({apiKey:"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"});
+const client = new Anthropic({apiKey:""});
 
 app.post("/prompt", async (req, res) => {
   const { prompt, projectId } = req.body;
