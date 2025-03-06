@@ -25,8 +25,8 @@ app.post("/prompt", async (req, res) => {
 
   let artifactProcessor = new ArtifactProcessor(
     "",
-    onFileUpdate,
-    onShellCommand
+    (filePath,fileContent) => onFileUpdate(filePath,fileContent,projectId),
+    (shellCommand) => onShellCommand(shellCommand,projectId)
   );
   let artifact = "";
 

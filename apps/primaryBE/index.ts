@@ -32,4 +32,24 @@ app.get("/projects", authMiddleware, async (req, res) => {
   res.status(200).json({ projects: projects });
 });
 
+app.get("prompts/:projectId", authMiddleware, async (req, res) => {
+  const projectId = req.params.projectId;
+  const prompts = await prisma.prompt.findMany({
+    where: {
+      projectId: projectId,
+    },
+  });
+  res.status(200).json({ prompts });
+});
+
+app.get("actions/:projectId", authMiddleware, async (req, res) => {
+  const projectId = req.params.projectId;
+  const actions = await prisma.action.findMany({
+    where: {
+      projectId: projectId,
+    },
+  });
+  res.status(200).json({ actions });
+});
+
 app.listen(8080);

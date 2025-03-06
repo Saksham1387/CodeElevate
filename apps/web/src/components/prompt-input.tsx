@@ -4,26 +4,34 @@ import { Link, Send } from "lucide-react";
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs";
 import { backend_url } from "../../config";
+import { useRouter } from "next/navigation";
+
 const PromptInterface = () => {
   const [inputValue, setInputValue] = useState("");
   const { getToken } = useAuth();
 
+  const router = useRouter();
   const handleSubmit = async () => {
     const token = await getToken();
-    console.log("here")
+    console.log("here");
     const response = await axios.post(
       `${backend_url}/project`,
-      {
+      { 
         prompt: inputValue,
       },
       {
         headers: {
-          authorization:`Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       }
     );
 
-    console.log(response.data);
+    // Get he worker url here
+    await axios.post(`${process.env.WORKER_API_URL}/prompt`, {
+      projectId: response.data.projectId,
+      prompt:inputValue
+    });
+    router.push(`/project/${response.data.projectId}`);
   };
   return (
     <div className="w-full flex flex-col items-center justify-center px-4 py-16">
